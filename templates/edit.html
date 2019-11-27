@@ -1,25 +1,24 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>图片信息编辑</title>
-</head>
-<body>
-        {{image['name']}}
-        {{image['uploader']}}
-        <hr>
-        
-    <form method="POST" action="/update/{{image['_id']}}">
-        <!-- <input hidden type="text" name="id" id="" value="{{image['id']}}" disabled> -->
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}图片信息编辑{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {{image['name']}} - by {{image['uploader']}}
+
+    <hr>
+    <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" width='400px'/>
+    <hr>
+    <form method="POST">
+        <input hidden type="text" name="id" id="" value="{{image['_id']}}">
         <input type="text" name="tag" id="addtag">
-        <input type="submit" value="增加新标签">
+        <input type="submit" name='addnewtag' value="增加新标签">
     </form>
-    
+
     {% for tag in image['tags'] %}
-            <li>{{ tag }}</li>
-            {% if not loop.last %}
-            {% endif %}
-        {% endfor %}
-</body>
-</html>
+    <li>{{ tag }}</li>
+        {% if not loop.last %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
