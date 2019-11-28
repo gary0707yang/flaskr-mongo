@@ -6,6 +6,8 @@ import os, time, datetime
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/imageg'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.secret_key = b'_5#y2L"KO89.\n\xec]/'
+
 db = Db()
 
 # 解决mongodb object（ObjectId）不能序列化问题，目前只能用于返回mongo_cursor多个字段
@@ -112,6 +114,8 @@ def edit(id):
         # 通过重定向改“POST” 为 “GET” 解决刷新重复提交
         return redirect(url_for('edit', id=id))
     image = db.get_image_filename_by_id(id)
+    if image == None:
+        flash('No image!')
     # print(type(image))
     # image = replace_images_id(image)
     # print(image)
