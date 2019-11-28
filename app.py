@@ -17,11 +17,11 @@ def replace_images_id(mongo_ob_resp):
         image.pop('_id')
         image['_id'] = str(id)
         images_list.append(image)
-    return jsonify(images_list)
+    return images_list
 
 # 获取文件扩展名
 def get_file_ext(filename):
-    ext = filename.rsplit('.')[-1]
+    ext = filename.rsplit('.')[-1].lower()
     return ext
 
 # 首页用来显示所有的图片以及图片所属信息
@@ -29,7 +29,7 @@ def get_file_ext(filename):
 def index():
     images = replace_images_id(db.get_all_image())
     # print(type(images))
-    return images
+    return render_template('images.html', images=images)
 
 # 显示所有的标签以及相关图片数量
 @app.route('/tags')
@@ -41,8 +41,10 @@ def tags():
 @app.route('/tags/<string:tag>')
 def find_by_tag(tag):
     images = db.get_images_by_tag(tag)
+    print(images)
     images_list = replace_images_id(images)
-    return images_list
+    print(images_list)
+    return render_template('images.html', images=images_list)
 
 # 上传图片文件
 #　TODO　上传多个图片，上传时修改标签还是之后统一修改
@@ -100,7 +102,7 @@ def edit(id):
     
     if request.method == 'POST':
     # 通过前端中的表单信息更新图片标签
-    # TODO 刷新重复提交问题，需要检查tag标签的唯一性，用数据库模型方式解决
+    # 刷新重复提交问题，通过检查tag标签的唯一性，使重复提交无意义
     # TODO 前端设置js控件，控制表格提交按钮，防止重复提交
         id = request.form['id']
         newTag = request.form['tag']

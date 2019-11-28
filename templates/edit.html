@@ -5,20 +5,36 @@
 {% endblock %}
 
 {% block content %}
-    {{image['name']}} - by {{image['uploader']}}
 
-    <hr>
-    <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" width='400px'/>
-    <hr>
-    <form method="POST">
-        <input hidden type="text" name="id" id="" value="{{image['_id']}}">
-        <input type="text" name="tag" id="addtag">
-        <input type="submit" name='addnewtag' value="增加新标签">
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8" id='picture'>
+                <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" class="img-fluid"    />
+        </div>
+        <div class="col-md-4" id='editor'>
+                <form class="form-inline" method="POST">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <input hidden type="text" name="id" id="" value="{{image['_id']}}">
+                            <input type="text" class="form-control" name="tag" id="addtag">
+                            <!-- <input type="text" class="form-control" name='tag' id="addtag" placeholder="New Tag"> -->
+                        </div>
+                        <input type="submit" class="btn btn-primary mb-2" name='addnewtag' value="增加新标签">
+                    </form>
+                    <hr >
+                    <ul>
+                        {% for tag in image['tags'] %}
+                        <a href="{{ url_for('find_by_tag', tag=tag) }}" class="badge badge-pill badge-dark">{{ tag }}</a>
+                        {% if not loop.last %}
 
-    {% for tag in image['tags'] %}
-    <li>{{ tag }}</li>
-        {% if not loop.last %}
-        {% endif %}
-    {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <a href="{{ url_for('download', id=image['_id']) }}" class="btn btn-success">下载</a>
+        </div>
+    </div>
+</div>
+
+
+
 {% endblock %}

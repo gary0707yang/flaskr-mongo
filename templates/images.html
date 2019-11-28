@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}所有图片{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<div class="row masonry">
+{% for image in images %}
+<div class="col-md-3 item">
+        <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" class="img-responsive"/>
+</div>
+{% endfor %}
+</div>        
+
+
+{% endblock %}
