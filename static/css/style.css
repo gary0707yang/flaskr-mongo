@@ -1,0 +1,7 @@
+
+@media (min-width: 860px) and (max-width: 1920px)
+{
+    .card-columns {
+        column-count: 4;
+    }
+}
