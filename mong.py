@@ -66,3 +66,15 @@ class Db:
     # TODO 增加多个图片
     def add_new_image(self, image_info):
         return self.image_collection.insert_one(image_info)
+
+    # 删除通过id删除图片
+    def delete_image_by_id(self, id):
+        # 查找文件
+        image = self.get_image_by_id(id)
+        # 确定文件路径返回
+        image_file = image['filename']
+        # 删除文件 留到业务端做
+        self.image_collection.delete_one({'_id':ObjectId(id)})
+        # 删除数据空间
+        # 返回文件名，用主业务删除
+        return image_file

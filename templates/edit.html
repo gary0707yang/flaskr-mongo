@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% block title %}图片信息编辑{% endblock %}
 
 {% block header %}
-<h1>{% block title %}图片信息编辑{% endblock %}</h1>
+<h1>图片信息编辑</h1>
 {% endblock %}
 
 {% block content %}
@@ -33,6 +34,7 @@
                     </ul>
                     <hr>
                     <a href="{{ url_for('download', id=image['_id']) }}" class="btn btn-success">下载</a>
+                    <a href="{{ url_for('delete_image', id=image['_id']) }}" class="btn btn-danger">删除</a>
         </div>
     </div>
 </div>

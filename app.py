@@ -55,6 +55,14 @@ def find_by_tag(tag):
     # print(images_list)
     return render_template('images.html', images=images_list)
 
+# 删除图片
+@app.route('/delete/<string:id>')
+def delete_image(id):
+    image_file = os.path.join(app.config['UPLOAD_FOLDER'], db.delete_image_by_id(id))
+    # print(image_file)
+    os.remove(image_file)
+    return redirect(url_for('index'))
+
 # 上传图片文件
 #　TODO　上传多个图片，上传时修改标签还是之后统一修改
 @app.route('/upload', methods=("GET", "POST"))
@@ -106,7 +114,7 @@ def download(id):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 #更新单张图片信息
-@app.route('/edit/<string:id>/', methods=("GET", "POST"))
+@app.route('/edit/<string:id>', methods=("GET", "POST"))
 def edit(id):
     image = db.get_image_by_id(id)
     if image == None:
@@ -134,3 +142,5 @@ def edit(id):
 @app.route('/update/<string:_id>', methods=("GET", "POST"))
 def update(_id):
     return _id
+
+
