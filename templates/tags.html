@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}标签系统{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="row">
+                
+{% for name in tags %}
+            <a href="{{ url_for('find_by_tag', tag=name) }}" class="btn btn-dark" role="button">{{ name }}  <span class="badge badge-light">{{tags[name]}}</span> </a>
+{% if not loop.last %}
+
+{% endif %}
+{% endfor %}
+</div>
+</div>
+{% endblock %}

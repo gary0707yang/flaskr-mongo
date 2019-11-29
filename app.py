@@ -37,15 +37,15 @@ def index():
 @app.route('/tags')
 def tags():
     tags = db.get_all_tags()
-    return tags
+    return render_template('tags.html', tags=tags)
 
 # 显示带有此标签的所有图片
 @app.route('/tags/<string:tag>')
 def find_by_tag(tag):
     images = db.get_images_by_tag(tag)
-    print(images)
+    # print(images)
     images_list = replace_images_id(images)
-    print(images_list)
+    # print(images_list)
     return render_template('images.html', images=images_list)
 
 # 上传图片文件
@@ -90,7 +90,7 @@ def upload():
 # TODO 批量下载
 @app.route('/download/<string:id>')
 def download(id):
-    image = db.get_image_filename_by_id(id)
+    image = db.get_image_by_id(id)
     # img_link = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
     # print(app.config['UPLOAD_FOLDER'])
     # print(image_filename)
@@ -98,27 +98,29 @@ def download(id):
     filename = image['filename']
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
-#更新图片信息
-@app.route('/edit/<string:id>', methods=("GET", "POST"))
+#更新单张图片信息
+@app.route('/edit/<string:id>/', methods=("GET", "POST"))
 def edit(id):
-    
+    image = db.get_image_by_id(id)
+    if image == None:
+        flash('No image!')
+
     if request.method == 'POST':
     # 通过前端中的表单信息更新图片标签
     # 刷新重复提交问题，通过检查tag标签的唯一性，使重复提交无意义
     # TODO 前端设置js控件，控制表格提交按钮，防止重复提交
-        id = request.form['id']
-        newTag = request.form['tag']
+        
+        #id 好像有点多多余，可以直接利用url中的id
+        # id = request.form['id'] 
+        
+        newTag = request.form['addtag']
         # print(newTag)
         db.insert_image_tag(id,newTag)
 
         # 通过重定向改“POST” 为 “GET” 解决刷新重复提交
         return redirect(url_for('edit', id=id))
-    image = db.get_image_filename_by_id(id)
-    if image == None:
-        flash('No image!')
-    # print(type(image))
-    # image = replace_images_id(image)
-    # print(image)
+
+    
     return render_template('edit.html', image=image)
 
 # 暂时无用,用来更新图片有带

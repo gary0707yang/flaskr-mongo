@@ -1,7 +1,13 @@
 
+/* 瀑布流栏数 */
 @media (min-width: 860px) and (max-width: 1920px)
 {
     .card-columns {
         column-count: 4;
     }
+}
+
+/* Button之间的空隙 */
+.btn{
+    margin-left: 8px;
 }
