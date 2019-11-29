@@ -12,7 +12,7 @@
             {% for image in images %}
             <div class="card">
                 <a href="{{ url_for('edit', id=image['_id']) }}">
-                    <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" class="card-img-top" id="{{image['_id']}}">
+                    <img src="{{ url_for('static',filename='imageg/'+image['filename']) }}" class="card-img-top lazy" id="{{image['_id']}}">
                 </a>
             </div>
             {% endfor %}

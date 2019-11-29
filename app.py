@@ -39,6 +39,13 @@ def tags():
     tags = db.get_all_tags()
     return render_template('tags.html', tags=tags)
 
+#标签搜索
+@app.route('/tag/')
+def search_by_tag():
+    tag = request.args['tag']
+    return redirect(url_for('find_by_tag', tag=tag))
+
+
 # 显示带有此标签的所有图片
 @app.route('/tags/<string:tag>')
 def find_by_tag(tag):
