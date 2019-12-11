@@ -125,7 +125,7 @@ def edit(id):
     # 刷新重复提交问题，通过检查tag标签的唯一性，使重复提交无意义
     # TODO 前端设置js控件，控制表格提交按钮，防止重复提交
         
-        #id 好像有点多多余，可以直接利用url中的id
+        #id 好像有点多余，可以直接利用url中的id
         # id = request.form['id'] 
         
         newTag = request.form['addtag']

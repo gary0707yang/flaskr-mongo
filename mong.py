@@ -7,12 +7,10 @@ class Db:
           self.connection = pymongo.MongoClient(url)
           self.db = self.connection[database]
           self.image_collection = self.db[image_collection]
-          self.user_colletion = self.db['user']
 
     #查找所有图片,直接返回数据库对象,包含多个对象
     def get_all_image(self):
         images = self.image_collection.find().sort("created_time",-1)
-
         return images
 
     #返回所有tag列表和所包含图片数量
@@ -42,23 +40,15 @@ class Db:
 
     #为图片插入标签
     def insert_image_tag(self, id, tag):
-        image = self.get_image_by_id(id)
-        
-        #检测标签是否存在
-        if tag not in image['tags']:
-            image['tags'].append(tag)
-            self.image_collection.update_one({'_id':ObjectId(id)}, { "$set": {'tags':image['tags']} })
-        
-        # print(image)
+
+        self.image_collection.update_one({'_id':ObjectId(id)}, {'$addToSet': {'tags':tag}})
+
 
     #删除图片的某个标签
     def delete_image_tag(self, id, tag):
-        image = self.get_image_by_id(id)
-        
-        #检测标签是否存在
-        if tag in image['tags']:
-            image['tags'].remove(tag)
-            self.image_collection.update_one({'_id':ObjectId(id)}, { "$set": {'tags':image['tags']} })
+
+        self.image_collection.update_one({'_id':ObjectId(id)},{'$pull': {'tags':tag}})
+
         
 
 
